@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Manage Pizzas</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/custom.css}" />
+    <script>
+        function confirmDelete(pizzaName) {
+            return confirm('Are you sure you want to delete "' + pizzaName + '"?');
+        }
+        function confirmClearAll() {
+            return confirm('Are you sure you want to clear all pizzas?');
+        }
+    </script>
+</head>
+<body>
+<th:block th:replace="~{fragments :: navbar(activePage='cart')}"></th:block>
+
+<div class="text-center mb-3">
+    <a href="/admin/pizzas/add" class="btn btn-primary ms-2">Add Pizza</a>
+    <form th:action="@{/admin/pizzas/clear}" method="post" style="display:inline;">
+        <button type="submit" class="btn btn-warning" onclick="return confirmClearAll();">Clear All Pizzas</button>
+    </form>
+</div>
+<div class="text-center">
+    <a href="/pizzas" class="btn btn-link">Back to Menu</a>
+</div>
+<div class="container mt-5 pt-5">
+    <h1 class="text-center mb-4">Manage Pizzas</h1>
+    <div class="row">
+        <div th:each="pizza : ${pizzas}" class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h3 class="card-title" th:text="${pizza.name}"></h3>
+                    <p class="card-text" th:text="${pizza.description}"></p>
+                    <ul class="list-group list-group-flush">
+                        <li th:each="entry : ${pizza.sizePrices}" class="list-group-item"
+                            th:text="${entry.key} + ': $' + ${entry.value}"></li>
+                    </ul>
+                </div>
+                <div class="card-footer text-center">
+                    <form th:action="@{/admin/pizzas/deactivate/{id}(id=${pizza.id})}" method="post">
+                        <button type="submit" class="btn btn-danger"
+                                th:attr="onclick=|return confirmDelete('${pizza.name}');|">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

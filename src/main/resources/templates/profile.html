@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Profile</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}" />
+</head>
+<body>
+<!-- Fixed Navbar -->
+<th:block th:replace="~{fragments :: navbar(activePage='cart')}"></th:block>
+<!-- Main Content -->
+<div class="container mt-5 pt-5">
+    <h1 class="text-center mb-4">Your Profile</h1>
+    <div class="card w-50 mx-auto">
+        <div class="card-body">
+            <h5 class="card-title">User Details</h5>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <strong>Username:</strong> <span th:text="${user.username}"></span>
+                </li>
+                <li class="list-group-item">
+                    <strong>Full Name:</strong> <span th:text="${user.fullName}"></span>
+                </li>
+                <li class="list-group-item">
+                    <strong>Phone:</strong> <span th:text="${user.phoneNumber}"></span>
+                </li>
+                <li class="list-group-item">
+                    <strong>Address:</strong>
+                    <span th:text="${user.address.street} + ', ' + ${user.address.city} + ', ' + ${user.address.postalCode} + ', ' + ${user.address.country}"></span>
+                </li>
+            </ul>
+        </div>
+        <div class="card-footer text-center">
+            <a th:href="@{/profile/edit}" class="btn btn-primary">Edit Profile</a>
+            <a href="/pizzas" class="btn btn-link">Back to Menu</a>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

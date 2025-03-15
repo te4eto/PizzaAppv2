@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Pizza</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/custom.css}" />
+
+</head>
+<body>
+<th:block th:replace="~{fragments :: navbar(activePage='manage')}"></th:block>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-danger text-white text-center">
+                    <h1 class="h3 mb-0">Add Pizza</h1>
+                    <p class="small">Create a new pizza for the menu</p>
+                </div>
+                <div class="card-body">
+                    <form th:action="@{/admin/pizzas/add}" th:object="${pizza}" method="post">
+                        <div class="mb-3">
+                            <label for="name" class="form-label fw-bold">Name:</label>
+                            <input type="text" id="name" th:field="*{name}" class="form-control"
+                                   placeholder="Enter pizza name" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label fw-bold">Description:</label>
+                            <input type="text" id="description" th:field="*{description}" class="form-control"
+                                   placeholder="Enter description" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="smallPrice" class="form-label fw-bold">Small Price:</label>
+                            <input type="number" id="smallPrice" step="0.01" th:field="*{sizePrices['small']}"
+                                   class="form-control" placeholder="Enter small price" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="mediumPrice" class="form-label fw-bold">Medium Price:</label>
+                            <input type="number" id="mediumPrice" step="0.01" th:field="*{sizePrices['medium']}"
+                                   class="form-control" placeholder="Enter medium price" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="largePrice" class="form-label fw-bold">Large Price:</label>
+                            <input type="number" id="largePrice" step="0.01" th:field="*{sizePrices['large']}"
+                                   class="form-control" placeholder="Enter large price" required />
+                        </div>
+                        <button type="submit" class="btn btn-danger w-100">Add Pizza</button>
+                    </form>
+                </div>
+                <div class="card-footer text-center">
+                    <a th:href="@{/pizzas}" class="btn btn-link">Back to Menu</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

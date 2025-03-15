@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Order History</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}" />
+</head>
+<body>
+<th:block th:replace="~{fragments :: navbar(activePage='cart')}"></th:block>
+
+<div class="container mt-5 pt-5">
+    <h1 class="text-center mb-4">Order History</h1>
+    <div th:if="${orders.isEmpty()}" class="text-center">
+        <p>No orders yet.</p>
+        <a href="/pizzas" class="btn btn-primary">Browse Menu</a>
+    </div>
+    <div th:each="order : ${orders}" class="card mb-3">
+        <div class="card-header">
+            <h3 th:text="'Order #' + ${order.id} + ' - ' + ${order.orderDate}"></h3>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li th:each="item : ${order.orderItems}" class="list-group-item">
+                <span th:text="${item.pizzaName} + ' (' + ${item.size} + ')'"></span> -
+                $<span th:text="${item.price}"></span> x <span th:text="${item.quantity}"></span>
+            </li>
+        </ul>
+        <div class="card-footer text-end">
+            Total Price: $<span th:text="${order.totalPrice}"></span>
+        </div>
+    </div>
+    <div class="text-center">
+        <a href="/pizzas" class="btn btn-link">Back to Menu</a>
+    </div>
+</div>
+
+<script th:src="@{/webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

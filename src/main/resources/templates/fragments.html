@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Fragments</title>
+</head>
+<body>
+<nav th:fragment="navbar(activePage)" class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="/">Pizza Shop</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" th:classappend="${activePage == 'menu'} ? 'active'" href="/pizzas">Menu</a>
+                </li>
+                <li th:if="${#authorization.expression('isAuthenticated()')}" class="nav-item">
+                    <a class="nav-link" th:classappend="${activePage == 'cart'} ? 'active'" th:href="@{/cart}">
+                        Cart (<span th:text="${cartItemCount != null ? cartItemCount : 0}"></span>)
+                    </a>
+                </li>
+                <li th:if="${#authorization.expression('isAuthenticated()')}" class="nav-item">
+                    <a class="nav-link" th:classappend="${activePage == 'orders'} ? 'active'" href="/orders">Orders</a>
+                </li>
+                <li th:if="${#authorization.expression('isAuthenticated()')}" class="nav-item">
+                    <a class="nav-link" th:classappend="${activePage == 'profile'} ? 'active'" href="/profile">Profile</a>
+                </li>
+                <li th:if="${#authorization.expression('isAuthenticated()')}" class="nav-item">
+                    <a class="nav-link" href="/logout">Logout</a>
+                </li>
+                <li th:unless="${#authorization.expression('isAuthenticated()')}" class="nav-item">
+                    <a class="nav-link" th:classappend="${activePage == 'login'} ? 'active'" href="/login">Login</a>
+                </li>
+                <li th:unless="${#authorization.expression('isAuthenticated()')}" class="nav-item">
+                    <a class="nav-link" th:classappend="${activePage == 'register'} ? 'active'" href="/register">Register</a>
+                </li>
+                <li th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" class="nav-item">
+                    <a class="nav-link" th:classappend="${activePage == 'manage'} ? 'active'" href="/admin/pizzas">Manage</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+</body>
+</html>

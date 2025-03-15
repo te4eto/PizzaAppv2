@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Cart</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}" />
+    <script>
+        function confirmClearCart() {
+            return confirm('Are you sure you want to clear all items from your cart?');
+        }
+    </script>
+</head>
+<body>
+<th:block th:replace="~{fragments :: navbar(activePage='cart')}"></th:block>
+
+<div class="container mt-5 pt-5">
+    <h1 class="text-center mb-4">Your Cart</h1>
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+    <div th:if="${cart.cartItems.isEmpty()}" class="text-center">
+        <p>Your cart is empty.</p>
+        <a href="/pizzas" class="btn btn-primary">Browse Menu</a>
+    </div>
+    <div th:unless="${cart.cartItems.isEmpty()}">
+        <ul class="list-group mb-3">
+            <li th:each="item : ${cart.cartItems}" class="list-group-item d-flex justify-content-between align-items-center">
+                <span th:text="${item.pizzaName} + ' (' + ${item.size} + ') - $' + ${item.price}"></span>
+                <div class="d-flex align-items-center gap-2">
+                    <form th:action="@{/cart/decrement/{id}(id=${item.cartItemId})}" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-outline-secondary btn-sm">-</button>
+                    </form>
+                    <span th:text="${item.quantity}"></span>
+                    <form th:action="@{/cart/increment/{id}(id=${item.cartItemId})}" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-outline-secondary btn-sm">+</button>
+                    </form>
+                    <form th:action="@{/cart/remove/{id}(id=${item.cartItemId})}" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-danger btn-sm ms-2">Remove</button>
+                    </form>
+                </div>
+            </li>
+        </ul>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <p class="mb-0">Total Price: $<span th:text="${cart.totalPrice}"></span></p>
+            <div class="d-flex gap-2">
+                <form th:action="@{/cart/place-order}" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-success">Order Now</button>
+                </form>
+                <form th:action="@{/cart/clear}" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-warning" onclick="return confirmClearCart();">Clear Cart</button>
+                </form>
+            </div>
+        </div>
+        <div class="text-center">
+            <a href="/pizzas" class="btn btn-link">Back to Menu</a>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>
