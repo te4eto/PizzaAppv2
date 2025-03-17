@@ -55,11 +55,13 @@ public class CartService {
     @Transactional
     public CartEntity getOrCreateCart() {
         UserEntity user = userService.getCurrentUser();
+
         if (user == null) {
             CartEntity cart = new CartEntity();
             cart.setCartItems(new ArrayList<>());
             return cart;
         }
+
         return cartRepository.findByUser(user)
                 .orElseGet(() -> {
                     CartEntity cart = new CartEntity();
@@ -117,6 +119,11 @@ public class CartService {
     @Transactional
     public void clearCart() {
         CartEntity cart = getOrCreateCart();
+        clearCart(cart);
+    }
+
+    @Transactional
+    public void clearCart(CartEntity cart){
         cartItemRepository.deleteAll(cart.getCartItems());
         cart.getCartItems().clear();
         cartRepository.saveAndFlush(cart);

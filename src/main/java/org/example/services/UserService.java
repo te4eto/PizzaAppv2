@@ -1,15 +1,11 @@
 package org.example.services;
 
-import org.example.constants.UserRole;
 import org.example.mappers.UserMapper;
 import org.example.models.dto.UserResponseDTO;
 import org.example.models.dto.requstdto.UserRegistrationDTO;
 import org.example.models.dto.requstdto.UserUpdateDTO;
-import org.example.models.entity.AddressEntity;
 import org.example.models.entity.UserEntity;
 import org.example.repository.UserRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,9 +21,6 @@ public class UserService {
     private UserRepository userRepository;
 
     @Autowired
-    private PasswordEncoder passwordEncoder; // From SecurityConfig
-
-    @Autowired
     private UserMapper userMapper;
 
     @Transactional
@@ -35,6 +28,7 @@ public class UserService {
         if (userRepository.existsByUsername(dto.getUsername())) {
             throw new IllegalArgumentException("Username already exists");
         }
+
         UserEntity user = userMapper.toUserEntity(dto);
         UserEntity savedUser = userRepository.save(user);
         return userMapper.toUserDTO(savedUser);

@@ -18,19 +18,8 @@ import java.util.stream.Collectors;
 @Service
 public class OrderService {
 
-    private static final Logger logger = LoggerFactory.getLogger(OrderService.class);
-
     @Autowired
     private OrderRepository orderRepository;
-
-    @Autowired
-    private CartRepository cartRepository;
-
-    @Autowired
-    private CartItemRepository cartItemRepository;
-
-    @Autowired
-    private PizzaService pizzaService;
 
     @Autowired
     private CartService cartService;
@@ -49,8 +38,6 @@ public class OrderService {
             throw new IllegalStateException("Cart is empty");
         }
 
-        logger.debug("Placing order, cartItems size before = {}", cart.getCartItems().size());
-
         OrderEntity order = new OrderEntity();
         order.setUser(userService.getCurrentUser());
         order.setOrderDate(LocalDateTime.now());
@@ -64,11 +51,7 @@ public class OrderService {
 
         OrderEntity savedOrder = orderRepository.save(order);
 
-        cartItemRepository.deleteAll(cart.getCartItems());
-        cart.getCartItems().clear();
-
-        cartRepository.saveAndFlush(cart);
-        logger.debug("Cart cleared, cartItems size after = {}", cart.getCartItems().size());
+        cartService.clearCart(cart);
 
         return savedOrder;
     }

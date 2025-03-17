@@ -23,10 +23,6 @@ public class PizzaService {
     @Autowired
     private PizzaMapper pizzaMapper;
 
-//    public List<PizzaEntity> getAllActivePizzas() {
-//        return pizzaRepository.findByIsActiveTrue();
-//    }
-
     public List<PizzaResponseDTO> getAllActivePizzas(){
         var pizzaEntities = pizzaRepository.findByIsActiveTrue();
         List<PizzaResponseDTO> pizzaResponseDTOS = pizzaEntities
@@ -39,6 +35,7 @@ public class PizzaService {
 
     public PizzaEntity getPizzaById(Long id, boolean requireActive) {
         Optional<PizzaEntity> pizza = pizzaRepository.findById(id);
+
         if (requireActive) {
             return pizza.filter(PizzaEntity::isActive)
                     .orElseThrow(() -> new EntityNotFoundException("Pizza not found or inactive"));

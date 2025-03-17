@@ -3,6 +3,7 @@ package org.example.controllers.rest;
 import org.example.mappers.PizzaMapper;
 import org.example.models.dto.PizzaResponseDTO;
 import org.example.models.dto.requstdto.PizzaRequestDTO;
+import org.example.models.entity.PizzaEntity;
 import org.example.services.PizzaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,13 @@ public class PizzaController {
     @GetMapping("/pizzas")
     public ResponseEntity<List<PizzaResponseDTO>> getActivePizzas() {
         return ResponseEntity.ok(pizzaService.getAllActivePizzas());
+    }
+
+    @GetMapping("/admin/pizzas/{id}")
+    public ResponseEntity<PizzaResponseDTO> getPizzaById(@PathVariable Long id) {
+        PizzaEntity pizza = pizzaService.getPizzaById(id);
+        PizzaResponseDTO dto = pizzaMapper.toPizzaResponseDTO(pizza);
+        return ResponseEntity.ok(dto);
     }
 
     @PostMapping("/admin/pizzas")

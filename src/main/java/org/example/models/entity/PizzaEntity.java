@@ -27,7 +27,7 @@ public class PizzaEntity {
     @CollectionTable(name = "pizza_sizes", joinColumns = @JoinColumn(name = "pizza_id"))
     @MapKeyColumn(name = "size")
     @Column(name = "price")
-    private Map<String, Double> sizePrices; // e.g., {"small": 15.0, "medium": 20.0, "large": 25.0}
+    private Map<String, Double> sizePrices;
 
     @Column(nullable = false)
     private boolean isActive = true;
