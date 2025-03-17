@@ -41,7 +41,7 @@ To run this project locally, you wil need the following tools and software insta
    1. Using maven 
       * mvn clean install
       * mvn spring-boot:run
-      * To close terminate, CTRL + C in the terminal
+      * To terminate, CTRL + C in the terminal
 
 * The first run will download all dependencies, create database tables automatically, and start the application.
 * Once started, access:
